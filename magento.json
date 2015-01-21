@@ -1,0 +1,61 @@
+{
+    "magento": {
+        "application": {
+            "name": "mage2sample",
+            "uid": ":auto",
+            "main_domain": "mage2sample.dev",
+            "directory": "<%=current_path%>",
+            "domain_map": {},
+            "magento_type": "2",
+            "composer": true,
+            "database_options": {
+                "create_test": true
+            },
+            "php_extensions": {
+                "xdebug": {
+                    "preferred_state": "beta",
+                    "zend_extensions": ["xdebug.so"],
+                    "directives": {
+                        "remote_enable": "1",
+                        "remote_port": "9000",
+                        "remote_host": "192.168.6.1",
+                        "max_nesting_level": "500"
+                    }
+                }
+            }
+        }
+    },
+    "mysql": {
+        "version": "5.6"
+    },
+    "php": {
+        "major_version": "5.4",
+        "directives": {
+            "date.timezone": "UTC",
+			"error_reporting": "E_ALL",
+            "display_errors": "1",
+            "log_errors": "1",
+            "error_log": "<%=current_path%>/var/log/php-error.log"
+        }
+    },
+    "recipes": [
+        "mysql::server",
+        "magento::application",
+        "git::default",
+        "magento::dev",
+        "selinux::disabled"
+    ],
+    "vm": {
+        "box": "chef/centos-6.6",
+        "cpu": 4,
+        "memory": 1024,
+        "ip": "192.168.6.99",
+        "mount_dirs": {
+            "<%=current_path%>": "<%=current_path%>"
+        },
+        "mount_dir_options": {
+            "type": "nfs",
+            "mount_options": ["rw", "tcp", "async", "nolock"]
+        }
+    }
+}
